@@ -1,0 +1,50 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>studibudget — CLI for Students</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; line-height: 1.6; }
+    header { background: #0f172a; color: white; padding: 3rem 1rem; text-align: center; }
+    main { max-width: 820px; margin: 2rem auto; padding: 0 1rem; }
+    .card { border: 1px solid #e5e7eb; border-radius: 14px; padding: 1.2rem; margin: 1rem 0; }
+    code { background:#f3f4f6; padding: 2px 6px; border-radius: 6px; }
+    footer { text-align:center; color:#6b7280; padding: 2rem; }
+    .btn { display:inline-block; padding:.7rem 1rem; border-radius: 10px; border:1px solid #334155; text-decoration:none; color: #111827; background: #e2e8f0; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>studibudget</h1>
+    <p>Track income, expenses, and tuition runway — right from your terminal.</p>
+    <p><strong>Created by Brian Doctor</strong></p>
+    <a class="btn" href="./downloads.html">Downloads</a>
+  </header>
+  <main>
+    <section class="card">
+      <h2>Why studibudget?</h2>
+      <p>Students juggle classes, mini-jobs, and bills. studibudget helps you see your balance fast and know exactly how many months of tuition you can cover.</p>
+    </section>
+    <section class="card">
+      <h2>Install</h2>
+      <pre><code>cargo install --git https://github.com/your-username/studibudget</code></pre>
+      <p>Or download a prebuilt static Linux binary below.</p>
+    </section>
+    <section class="card">
+      <h2>Usage</h2>
+<pre><code>studibudget add income 450 "Kaufland shift"
+studibudget add expense 320 "Rent part"
+studibudget summary --last 20
+studibudget runway 250
+studibudget export out.csv</code></pre>
+    </section>
+    <section class="card">
+      <h2>Who is it for?</h2>
+      <p>International students in Germany who need simple budgeting and tuition planning in seconds.</p>
+    </section>
+  </main>
+  <footer>&copy; 2025 Brian Doctor</footer>
+</body>
+</html>
