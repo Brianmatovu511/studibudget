@@ -1,4 +1,3 @@
-
 use clap::{Parser, Subcommand, ValueEnum};
 use chrono::{DateTime, Local, NaiveDate};
 use directories::ProjectDirs;
@@ -63,7 +62,7 @@ struct Tx {
     note: String,
 }
 
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, ValueEnum)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize, ValueEnum, PartialEq, Eq)]
 enum Kind {
     Income,
     Expense,
