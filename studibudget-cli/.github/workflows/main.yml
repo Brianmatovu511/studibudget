@@ -2,27 +2,36 @@ name: build-binaries
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [ main ]
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
-        target: [aarch64-unknown-linux-musl, x86_64-unknown-linux-musl]
+        target: [x86_64-unknown-linux-gnu, aarch64-unknown-linux-gnu]
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
-      - name: Install musl tools
-        run: sudo apt-get update && sudo apt-get install -y musl-tools
-      - name: Build (release, static)
+
+      - name: Install aarch64 linker
+        if: matrix.target == 'aarch64-unknown-linux-gnu'
         run: |
-          RUSTFLAGS="-C target-feature=+crt-static" cargo build --release --target ${{ matrix.target }}
-      - name: Upload artifact
+          sudo apt-get update
+          sudo apt-get install -y gcc-aarch64-linux-gnu
+
+      - name: Build
+        run: cargo build --release --target ${{ matrix.target }}
+
+      - name: Upload binary
         uses: actions/upload-artifact@v4
         with:
           name: studibudget-${{ matrix.target }}
