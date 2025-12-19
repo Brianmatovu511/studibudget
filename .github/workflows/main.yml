@@ -3,43 +3,39 @@ name: build-binaries
 on:
   push:
     branches: [ main ]
-    tags:
-      - "v*"
+    tags: [ "v*" ]
   workflow_dispatch:
 
 permissions:
-  contents: write   # required for GitHub Releases
+  contents: write
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - x86_64-unknown-linux-musl
-          - aarch64-unknown-linux-musl
+        target: [x86_64-unknown-linux-musl, aarch64-unknown-linux-musl]
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Rust
+      - name: Install Rust (stable)
         uses: dtolnay/rust-toolchain@stable
 
       - name: Install cross
         run: cargo install cross --locked
 
-      - name: Build static binary (musl)
+      - name: Build (static musl)
         working-directory: studibudget-cli
         run: cross build --release --target ${{ matrix.target }}
 
-      - name: Prepare artifact
+      - name: Prepare dist files
         run: |
           mkdir -p dist
-          cp studibudget-cli/target/${{ matrix.target }}/release/studibudget \
-             dist/studibudget-${{ matrix.target }}
+          cp studibudget-cli/target/${{ matrix.target }}/release/studibudget dist/studibudget-${{ matrix.target }}
+          chmod +x dist/studibudget-${{ matrix.target }}
 
       - name: Upload artifact (Actions)
         uses: actions/upload-artifact@v4
@@ -47,9 +43,8 @@ jobs:
           name: studibudget-${{ matrix.target }}
           path: dist/studibudget-${{ matrix.target }}
 
-      # 🚀 Publish binaries to GitHub Releases (ONLY for tags like v1.0.0)
-      - name: Upload to GitHub Release
+      - name: Upload to GitHub Release (tag only)
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: dist/studibudget-${{ matrix.target }}
+          files: dist/studibudget-*
